@@ -1,5 +1,4 @@
 import { Config } from './config/config';
-import { MemoryManager } from './shared/memoryManager';
 import { RoomManager } from './components/rooms/roomManager';
 import { SpawnManager } from './components/spawns/spawnManager';
 import { SourceManager } from './components/sources/sourceManager';
@@ -19,7 +18,6 @@ export namespace GameManager {
 
     // Use this bootstrap wisely. You can cache some of your stuff to save CPU
     // You should extend prototypes before game loop in here.
-
     RoomManager.loadRooms();
     SpawnManager.loadSpawns();
     SourceManager.loadSources();
@@ -28,8 +26,6 @@ export namespace GameManager {
   export function loop() {
     // Loop code starts here
     // This is executed every tick
-
-    MemoryManager.loadMemory();
     CreepManager.loadCreeps();
 
     if (!CreepManager.isHarvesterLimitFull()) {
@@ -39,8 +35,6 @@ export namespace GameManager {
         console.log('Need more harvesters!');
       }
     }
-
     CreepManager.harvestersGoToWork();
   }
-
 }

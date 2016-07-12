@@ -1,5 +1,4 @@
 import { Config } from './../../config/config';
-import { MemoryManager } from './../../shared/memoryManager';
 import { SourceManager } from './../sources/sourceManager';
 import { SpawnManager } from './../spawns/spawnManager';
 import { Harvester } from './harvester';
@@ -48,8 +47,7 @@ export namespace CreepManager {
     let harvesters: Harvester[] = [];
     _.forEach(this.creeps, function (creep: Creep, creepName: string) {
       if (creep.memory.role == 'harvester') {
-        let harvester = new Harvester();
-        harvester.setCreep(creep);
+        let harvester = new Harvester(creep);
         // Next move for harvester
         harvester.action();
 
@@ -79,5 +77,4 @@ export namespace CreepManager {
       }
     }
   }
-
 }

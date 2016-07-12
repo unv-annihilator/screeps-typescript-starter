@@ -1,66 +1,50 @@
+/// <reference path="./harvester.d.ts" />
 import { Config } from './../../config/config';
-import { ICreepAction, CreepAction } from './creepAction';
+import { Creep } from './creep';
 
-export interface IHarvester {
-
+export class Harvester implements Harvester {
+  creep: Creep;
   targetSource: Source;
   targetEnergyDropOff: Spawn | Structure;
 
-  isBagFull(): boolean;
-  tryHarvest(): number;
-  moveToHarvest(): void;
-  tryEnergyDropOff(): number;
-  moveToDropEnergy(): void;
-
-  action(): boolean;
-}
-
-export class Harvester extends CreepAction implements IHarvester, ICreepAction {
-
-  public targetSource: Source;
-  public targetEnergyDropOff: Spawn | Structure;
-
-  public setCreep(creep: Creep) {
-    super.setCreep(creep);
-
+  constructor(creep: Creep) {
+    this.creep = creep;
     this.targetSource = <Source>Game.getObjectById(this.creep.memory.target_source_id);
     this.targetEnergyDropOff = <Spawn | Structure>Game.getObjectById(this.creep.memory.target_energy_dropoff_id);
   }
 
-  public isBagFull(): boolean {
-    return (this.creep.carry.energy === this.creep.carryCapacity);
+  isBagFull(): boolean {
+    return (_.sum(this.creep.carry) === this.creep.carryCapacity);
   }
 
-  public tryHarvest(): number {
+  tryHarvest(): number {
     return this.creep.harvest(this.targetSource);
   }
 
-  public moveToHarvest(): void {
+  moveToHarvest(): void {
     if (this.tryHarvest() === ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetSource);
+      this.creep.moveTo(this.targetSource);
     }
   }
 
-  public tryEnergyDropOff(): number {
+  tryEnergyDropOff(): number {
     return this.creep.transfer(this.targetEnergyDropOff, RESOURCE_ENERGY);
   }
 
-  public moveToDropEnergy(): void {
+  moveToDropEnergy(): void {
     if (this.tryEnergyDropOff() === ERR_NOT_IN_RANGE) {
-      this.moveTo(this.targetEnergyDropOff);
+      this.creep.moveTo(this.targetEnergyDropOff);
     }
   }
 
-  public action(): boolean {
-    if (this.needsRenew()) {
-      this.moveToRenew();
+  action(): boolean {
+    if (this.creep.needsRenew()) {
+      this.creep.moveToRenew();
     } else if (this.isBagFull()) {
-      this.moveToDropEnergy();
+      this.moveToDropEnergy;
     } else {
       this.moveToHarvest();
     }
-
-    return true
+    return true;
   }
-
 }

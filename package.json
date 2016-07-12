@@ -15,10 +15,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "gulp": "~3.9.0",
+    "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-util": "^3.0.7",
     "tsproject": "^1.2.1",
-    "typings": "^1.3.0"
+    "typescript": "^1.8.10",
+    "typings": "^1.3.1"
   }
 }
